@@ -1,0 +1,22 @@
+name: APT29 - Screen Capture via PowerShell
+index: winlogbeat-*
+type: any
+filter:
+  - query:
+      query_string:
+        query: 'process.command_line: *Add-Type* AND process.command_line: *System.Drawing.Bitmap*'
+alert:
+  - command
+
+command:
+  - "mongoimport"
+  - "--uri"
+  - "mongodb://ea_user:EaUserP@ss!@localhost:27017/alerts_db"
+  - "--collection"
+  - "alerts"
+  - "--jsonArray"
+
+pipe_match_json: true
+fail_on_non_zero_exit: true
+realert:
+  minutes: 1

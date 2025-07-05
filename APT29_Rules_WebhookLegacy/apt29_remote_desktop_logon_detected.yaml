@@ -1,0 +1,17 @@
+name: APT29 - Remote Desktop Logon Detected
+type: any
+index: winlogbeat-*
+filter:
+  - query:
+      query_string:
+        query: >
+          event.code: 4624 AND winlog.event_data.LogonType: "10"
+alert:
+  - post
+http_post_url: http://192.168.0.40:8000/webhook
+http_post_static_payload:
+  rule: "APT29 - Remote Desktop Logon Detected"
+  technique: "T1021.001"
+  threat_group: "APT29"
+realert:
+  minutes: 1

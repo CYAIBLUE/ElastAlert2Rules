@@ -1,0 +1,16 @@
+alert:
+- post
+filter:
+- query:
+    query_string:
+      query: 'process.name: schtasks.exe AND process.command_line: *create*'
+http_post_static_payload:
+  rule: APT29 - Suspicious Scheduled Task Creation
+  technique: T1053
+  threat_group: APT29
+http_post_url: http://192.168.0.40:8000/webhook
+index: winlogbeat-*
+name: APT29 - Suspicious Scheduled Task Creation
+realert:
+  minutes: 1
+type: any

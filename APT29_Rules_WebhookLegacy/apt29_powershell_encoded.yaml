@@ -1,0 +1,19 @@
+name: APT29 - PowerShell Encoded Command Execution
+type: any
+index: winlogbeat-*
+filter:
+  - query:
+      query_string:
+        query: >
+          (process.name: powershell.exe AND process.command_line: *-enc*) OR
+          (process.name: powershell.exe AND process.command_line: *-EncodedCommand*)
+alert:
+  - post
+  - debug
+http_post_url: http://192.168.0.40:8000/webhook
+http_post_static_payload:
+  rule: "APT29 - PowerShell Encoded Command Execution"
+  technique: "T1059.001"
+  threat_group: "APT29"
+realert:
+  minutes: 1

@@ -1,0 +1,22 @@
+name: APT29 - Remote Desktop Logon Detected
+index: winlogbeat-*
+type: any
+filter:
+  - query:
+      query_string:
+        query: 'event.code: 4624 AND winlog.event_data.LogonType: "10"'
+alert:
+  - command
+
+command:
+  - "mongoimport"
+  - "--uri"
+  - "mongodb://ea_user:EaUserP@ss!@localhost:27017/alerts_db"
+  - "--collection"
+  - "alerts"
+  - "--jsonArray"
+
+pipe_match_json: true
+fail_on_non_zero_exit: true
+realert:
+  minutes: 1

@@ -1,0 +1,16 @@
+alert:
+- post
+filter:
+- query:
+    query_string:
+      query: 'process.command_line: *\cmd.exe /c* AND process.command_line: *__EventFilter*'
+http_post_static_payload:
+  rule: APT29 - Possible WMIPersistence via WMIExec
+  technique: T1047
+  threat_group: APT29
+http_post_url: http://192.168.0.40:8000/webhook
+index: winlogbeat-*
+name: APT29 - Possible WMIPersistence via WMIExec
+realert:
+  minutes: 1
+type: any

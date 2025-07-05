@@ -1,0 +1,22 @@
+name: APT29 - File Download via BITSAdmin
+index: winlogbeat-*
+type: any
+filter:
+  - query:
+      query_string:
+        query: 'process.name: bitsadmin.exe AND process.command_line: * /transfer *'
+alert:
+  - command
+
+command:
+  - "mongoimport"
+  - "--uri"
+  - "mongodb://ea_user:EaUserP@ss!@localhost:27017/alerts_db"
+  - "--collection"
+  - "alerts"
+  - "--jsonArray"
+
+pipe_match_json: true
+fail_on_non_zero_exit: true
+realert:
+  minutes: 1
